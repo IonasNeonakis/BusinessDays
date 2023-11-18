@@ -29,7 +29,7 @@ class BusinessDaysFrance(val additionalHolidays: (year: Year) -> Collection<Loca
     companion object {
 
         /**
-         * Calculates the date of New Year's Eve for the given year.
+         * Calculates the date of New Year day for the given year.
          *
          * @param year The year for which to calculate New Year's Eve.
          * @return The date of New Year's Eve.
