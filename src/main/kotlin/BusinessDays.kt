@@ -29,6 +29,35 @@ open class BusinessDays(val holidays: (year: Year) -> Collection<LocalDate> = { 
      */
     fun isBusinessDay(date: LocalDate): Boolean = isWeekday(date) && !isHoliday(date)
 
+    /**
+     * Adds a specified number of business days to the given date.
+     *
+     * @param date The starting date.
+     * @param days The number of business days to add.
+     * @return The resulting date after adding the specified business days.
+     */
+    fun businessDaysAdd(date: LocalDate, days: Long): LocalDate {
+        val sign: Long = if (days >= 0) 1 else -1
+        var result = date
+        var remainingDays = days
+        while (remainingDays != 0L) {
+            result = result.plusDays(sign)
+            if (isBusinessDay(result)) {
+                remainingDays -= sign
+            }
+        }
+        return result
+    }
+
+    /**
+     * Subtracts a specified number of business days from the given date.
+     *
+     * @param date The starting date.
+     * @param days The number of business days to subtract.
+     * @return The resulting date after subtracting the specified business days.
+     */
+    fun businessDaysSubtract(date: LocalDate, days: Long): LocalDate = businessDaysAdd(date, -days)
+
     companion object {
 
         /**
