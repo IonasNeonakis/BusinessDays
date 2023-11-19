@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "1.9.20"
     application
 }
 
@@ -11,7 +11,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.strikt:strikt-core:0.34.1")
 }
 
@@ -23,6 +24,9 @@ kotlin {
     jvmToolchain(8)
 }
 
-application {
-    mainClass.set("MainKt")
+
+sourceSets {
+    test {
+        kotlin.srcDir("src/test/kotlin")
+    }
 }

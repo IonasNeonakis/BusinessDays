@@ -1,10 +1,10 @@
 import fixtures.FrenchHolidaysFixture
+import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
-import kotlin.test.Test
 
 class BusinessDaysFranceTest {
     private val defaultBusinessDaysFrance = BusinessDaysFrance()
