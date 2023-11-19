@@ -73,7 +73,7 @@ class BusinessDaysFranceTest {
 
 
     @Test
-    fun `should return all Saints' day of 2023`() {
+    fun `should return all Saints day of 2023`() {
         val allSaintsDay2023 = BusinessDaysFrance.allSaintsDay(Year.of(2023))
         expectThat(allSaintsDay2023).isEqualTo(LocalDate.of(2023, Month.NOVEMBER, 1))
     }

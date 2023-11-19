@@ -84,15 +84,16 @@ class BusinessDaysTest {
 
     @Test
     fun `given BusinessDays with a holiday, when adding days, should skip holiday and weekends`() {
-        val monday4ofJanuary = LocalDate.of(2021, Month.JANUARY, 4)
-        val businessDays = BusinessDays(holidays = { setOf(monday4ofJanuary.plusDays(1)) })
+        with(DaysFixture){
+            val businessDays = BusinessDays(holidays = { setOf(tuesday5ofJanuary) })
 
-        expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 1)).isEqualTo(LocalDate.of(2021, Month.JANUARY, 6))
-        expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 2)).isEqualTo(LocalDate.of(2021, Month.JANUARY, 7))
-        expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 3)).isEqualTo(LocalDate.of(2021, Month.JANUARY, 8))
+            expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 1)).isEqualTo(wednesday6ofJanuary)
+            expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 2)).isEqualTo(thursday7ofJanuary)
+            expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 3)).isEqualTo(friday8ofJanuary)
 
-        expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 4)).isEqualTo(LocalDate.of(2021, Month.JANUARY, 11))
-        expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 10)).isEqualTo(LocalDate.of(2021, Month.JANUARY, 19))
+            expectThat(businessDays.businessDaysAdd(monday4ofJanuary, 4)).isEqualTo(monday11ofJanuary)
+        }
+
     }
 
     @Test
@@ -111,6 +112,38 @@ class BusinessDaysTest {
         }
 
 
+    }
+
+    @Test
+    fun `given BusinessDays with a holiday, when calculating business days between dates, should skip holiday and weekends`() {
+        with(DaysFixture){
+            val businessDays = BusinessDays(holidays = { setOf(wednesday6ofJanuary) })
+
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, monday4ofJanuary)).isEqualTo(0)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, tuesday5ofJanuary)).isEqualTo(1)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, wednesday6ofJanuary)).isEqualTo(1)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, thursday7ofJanuary)).isEqualTo(2)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, friday8ofJanuary)).isEqualTo(3)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, saturday9ofJanuary)).isEqualTo(3)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, sunday10ofJanuary)).isEqualTo(3)
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, monday11ofJanuary)).isEqualTo(4)
+        }
+    }
+
+    @Test
+    fun `given BusinessDays with a holiday and start date being grater than end date, when calculating business days between dates , should skip holiday and weekends`() {
+        with(DaysFixture){
+            val businessDays = BusinessDays(holidays = { setOf(wednesday6ofJanuary) })
+
+            expectThat(businessDays.businessDaysBetween(monday4ofJanuary, monday4ofJanuary)).isEqualTo(0)
+            expectThat(businessDays.businessDaysBetween(tuesday5ofJanuary, monday4ofJanuary)).isEqualTo(-1)
+            expectThat(businessDays.businessDaysBetween(wednesday6ofJanuary, monday4ofJanuary)).isEqualTo(-2)
+            expectThat(businessDays.businessDaysBetween(thursday7ofJanuary, monday4ofJanuary)).isEqualTo(-2)
+            expectThat(businessDays.businessDaysBetween(friday8ofJanuary, monday4ofJanuary)).isEqualTo(-3)
+            expectThat(businessDays.businessDaysBetween(saturday9ofJanuary, monday4ofJanuary)).isEqualTo(-4)
+            expectThat(businessDays.businessDaysBetween(sunday10ofJanuary, monday4ofJanuary)).isEqualTo(-4)
+            expectThat(businessDays.businessDaysBetween(monday11ofJanuary, monday4ofJanuary)).isEqualTo(-4)
+        }
     }
 }
 

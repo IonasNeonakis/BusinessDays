@@ -58,6 +58,29 @@ open class BusinessDays(val holidays: (year: Year) -> Collection<LocalDate> = { 
      */
     fun businessDaysSubtract(date: LocalDate, days: Long): LocalDate = businessDaysAdd(date, -days)
 
+
+    /**
+     * Calculates the number of business days between two dates.
+     * The result is positive if the end date is after the start date, negative if the end date is before the start date.
+     * The result does not include the start date, but does include the end date.
+     *
+     * @param start The starting date.
+     * @param end The ending date.
+     * @return The number of business days between the two dates.
+     */
+    fun businessDaysBetween(start: LocalDate, end: LocalDate): Long {
+        val sign: Long = if (end.isAfter(start)) 1 else -1
+        var result = 0L
+        var current = start
+        while (current != end) {
+            current = current.plusDays(sign)
+            if (isBusinessDay(current)) {
+                result += sign
+            }
+        }
+        return result
+    }
+
     companion object {
 
         /**
