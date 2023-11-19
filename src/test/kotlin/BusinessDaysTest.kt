@@ -1,11 +1,11 @@
 import fixtures.DaysFixture
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.isEqualTo
 import java.time.LocalDate
 import java.time.Month
-import kotlin.test.Test
 
 class BusinessDaysTest {
     private val defaultBusinessDays = BusinessDays()
