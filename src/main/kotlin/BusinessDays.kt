@@ -81,6 +81,10 @@ open class BusinessDays(val holidays: (year: Year) -> Collection<LocalDate> = { 
         return result
     }
 
+    fun nextBusinessDay(date: LocalDate): LocalDate = businessDaysAdd(date, 1)
+
+    fun previousBusinessDay(date: LocalDate): LocalDate = businessDaysSubtract(date, 1)
+
     companion object {
 
         /**
