@@ -97,6 +97,21 @@ class BusinessDaysTest {
     }
 
     @Test
+    fun `given BusinessDays with a holiday, when retrieving next day, should skip holiday and weekends`() {
+        with(DaysFixture){
+            val businessDays = BusinessDays(holidays = { setOf(tuesday5ofJanuary) })
+            expectThat(businessDays.nextBusinessDay(monday4ofJanuary)).isEqualTo(wednesday6ofJanuary)
+            expectThat(businessDays.nextBusinessDay(tuesday5ofJanuary)).isEqualTo(wednesday6ofJanuary)
+            expectThat(businessDays.nextBusinessDay(wednesday6ofJanuary)).isEqualTo(thursday7ofJanuary)
+            expectThat(businessDays.nextBusinessDay(thursday7ofJanuary)).isEqualTo(friday8ofJanuary)
+            expectThat(businessDays.nextBusinessDay(friday8ofJanuary)).isEqualTo(monday11ofJanuary)
+            expectThat(businessDays.nextBusinessDay(saturday9ofJanuary)).isEqualTo(monday11ofJanuary)
+            expectThat(businessDays.nextBusinessDay(sunday10ofJanuary)).isEqualTo(monday11ofJanuary)
+        }
+
+    }
+
+    @Test
     fun `given BusinessDays with a holiday, when subtracting days, should skip holiday and weekends`() {
         with(DaysFixture){
             val businessDays = BusinessDays(holidays = { setOf(LocalDate.of(2021, Month.JANUARY, 1)) })
