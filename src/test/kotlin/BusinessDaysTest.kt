@@ -108,7 +108,6 @@ class BusinessDaysTest {
             expectThat(businessDays.nextBusinessDay(saturday9ofJanuary)).isEqualTo(monday11ofJanuary)
             expectThat(businessDays.nextBusinessDay(sunday10ofJanuary)).isEqualTo(monday11ofJanuary)
         }
-
     }
 
     @Test
@@ -125,8 +124,20 @@ class BusinessDaysTest {
             expectThat(businessDays.businessDaysSubtract(monday4ofJanuary, 6)).isEqualTo(LocalDate.of(2020, Month.DECEMBER, 24))
             expectThat(businessDays.businessDaysSubtract(monday4ofJanuary, 7)).isEqualTo(LocalDate.of(2020, Month.DECEMBER, 23))
         }
+    }
 
-
+    @Test
+    fun `given BusinessDays with a holiday, when retrieving previous day, should skip holiday and weekends`() {
+        with(DaysFixture){
+            val businessDays = BusinessDays(holidays = { setOf(tuesday5ofJanuary) })
+            expectThat(businessDays.previousBusinessDay(tuesday5ofJanuary)).isEqualTo(monday4ofJanuary)
+            expectThat(businessDays.previousBusinessDay(wednesday6ofJanuary)).isEqualTo(monday4ofJanuary)
+            expectThat(businessDays.previousBusinessDay(thursday7ofJanuary)).isEqualTo(wednesday6ofJanuary)
+            expectThat(businessDays.previousBusinessDay(friday8ofJanuary)).isEqualTo(thursday7ofJanuary)
+            expectThat(businessDays.previousBusinessDay(saturday9ofJanuary)).isEqualTo(friday8ofJanuary)
+            expectThat(businessDays.previousBusinessDay(sunday10ofJanuary)).isEqualTo(friday8ofJanuary)
+            expectThat(businessDays.previousBusinessDay(monday11ofJanuary)).isEqualTo(friday8ofJanuary)
+        }
     }
 
     @Test
